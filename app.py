@@ -8,7 +8,7 @@ except ImportError:
     psycopg = None
 
 app = Flask(__name__)
-app.secret_key = "segredo123"  # simples para aula
+app.secret_key = os.environ.get("FLASK_SECRET", "segredo123")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")  # Postgres remoto
 
