@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8">
+  <title>Painel</title>
 </head>
-<body>  
-    
+<body>
+  <h2>Usuários cadastrados</h2>
+
+  <ul>
+    {% for u in users %}
+      <li>{{ u.username }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{{ url_for('login') }}">Sair</a>
 </body>
+</html>

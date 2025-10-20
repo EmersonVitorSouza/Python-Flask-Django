@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Criar Conta</title>
 </head>
 <body>
-  <h2>Login</h2>
+  <h2>Criar Conta</h2>
 
   {% with msgs = get_flashed_messages(with_categories=true) %}
     {% for cat, msg in msgs %}
@@ -16,9 +16,9 @@
   <form method="POST">
     <input type="text" name="username" placeholder="Usuário" required>
     <input type="password" name="password" placeholder="Senha" required>
-    <button type="submit">Entrar</button>
+    <button type="submit">Cadastrar</button>
   </form>
 
-  <p>Não tem conta? <a href="{{ url_for('register_page') }}">Criar conta</a></p>
+  <p>Já possui conta? <a href="{{ url_for('login') }}">Fazer login</a></p>
 </body>
 </html>
