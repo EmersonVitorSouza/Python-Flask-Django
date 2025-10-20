@@ -114,8 +114,8 @@ def register_page():
     return render_template("register.html")
 
 
-@app.route("/dashboard")
-def dashboard():
+@app.route("/usuarios")
+def usuarios():
     if "user" not in session:
         return redirect(url_for("login"))
 
@@ -139,7 +139,7 @@ def dashboard():
         except Exception as e:
             print("Erro listar usuários SQLite:", e)
 
-    return render_template("dashboard.html", users=users, current_user=session.get("user"))
+    return render_template("usuarios.html", users=users, current_user=session.get("user"))
 
 
 @app.route("/logout")
