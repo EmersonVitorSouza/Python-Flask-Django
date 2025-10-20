@@ -7,12 +7,14 @@
 <body>
   <h2>Usuários cadastrados</h2>
 
+  <p>Você está logado como: {{ current_user }}</p>
+  
   <ul>
     {% for u in users %}
       <li>{{ u.username }}</li>
     {% endfor %}
   </ul>
 
-  <a href="{{ url_for('login') }}">Sair</a>
+  <a href="{{ url_for('logout') }}">Sair</a>
 </body>
 </html>
