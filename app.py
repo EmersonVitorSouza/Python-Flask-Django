@@ -59,7 +59,7 @@ def login():
 
         if user:
             session["user"] = user[0] if DATABASE_URL else user["username"]
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("listUsuarios"))
         else:
             flash("Usuário ou senha incorretos.", "danger")
             return redirect(url_for("login"))
@@ -68,14 +68,14 @@ def login():
 
 
 @app.route("/register", methods=["GET", "POST"])
-def register_page():
+def register():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
 
         if not username or not password:
             flash("Preencha usuário e senha.", "warning")
-            return redirect(url_for("register_page"))
+            return redirect(url_for("register"))
 
         # CADASTRO
         success = False
@@ -109,13 +109,13 @@ def register_page():
             return redirect(url_for("login"))
         else:
             flash("Usuário já existe ou houve erro.", "warning")
-            return redirect(url_for("register_page"))
+            return redirect(url_for("register"))
 
     return render_template("register.html")
 
 
-@app.route("/usuarios")
-def usuarios():
+@app.route("/listUsuarios")
+def listUsuarios():
     if "user" not in session:
         return redirect(url_for("login"))
 
@@ -139,7 +139,7 @@ def usuarios():
         except Exception as e:
             print("Erro listar usuários SQLite:", e)
 
-    return render_template("usuarios.html", users=users, current_user=session.get("user"))
+    return render_template("listUsuarios.html", users=users, current_user=session.get("user"))
 
 
 @app.route("/logout")

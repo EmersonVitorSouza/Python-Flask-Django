@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS usuarios (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    senha VARCHAR(200) NOT NULL
+);
