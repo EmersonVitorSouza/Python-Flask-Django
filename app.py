@@ -12,6 +12,7 @@ app.secret_key = os.environ.get("FLASK_SECRET", "segredo123")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")  # Postgres remoto
 
+
 def get_conn():
     if DATABASE_URL and psycopg:
         return psycopg.connect(DATABASE_URL, sslmode="require")
@@ -19,6 +20,36 @@ def get_conn():
         conn = sqlite3.connect("users.db")
         conn.row_factory = sqlite3.Row
         return conn
+
+
+def init_db():
+    """Cria a tabela usuarios caso não exista, tanto no Postgres quanto no SQLite."""
+    sql = """
+        CREATE TABLE IF NOT EXISTS usuarios (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        senha VARCHAR(100) NOT NULL
+    );
+    """
+
+    if DATABASE_URL and psycopg:
+        try:
+            with get_conn() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(sql)
+                    conn.commit()
+            print("Tabela criada/verificada no Postgres.")
+        except Exception as e:
+            print("Erro ao criar tabela no Postgres:", e)
+    else:
+        try:
+            conn = get_conn()
+            conn.execute(sql.replace("SERIAL", "INTEGER").replace("VARCHAR(100)", "TEXT"))
+            conn.commit()
+            conn.close()
+            print("Tabela criada/verificada no SQLite.")
+        except Exception as e:
+            print("Erro ao criar tabela no SQLite:", e)
 
 # ---------------------------
 # ROTAS
@@ -149,4 +180,5 @@ def logout():
 
 
 if __name__ == "__main__":
+    init_db()           # <<==== CRIA A TABELA AQUI
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
